@@ -1,0 +1,63 @@
+{% themeextends "admin/base_admin.html" %}
+{% load i18n %}
+{% load datetimeformatting %}
+{% block title %}{% trans 'My Plugin Models View' %}{% endblock %}
+{% block heading %}{% trans 'My Plugin Models View' %}{% endblock heading %}
+
+{% block content %}
+<div class="itemcontent">
+    {% if objects %}
+    <form action="{% url delete_my_plugin_model %}">
+        <div style="float:right;" class="table-delete">
+            <a href="{% url add_my_plugin_model %}"><button type="button" class="button button-add" onclick="window.location=this.parentNode.href;">{% trans "Add" %}</button></a>
+            <a href="#" onclick="$(this).closest('form').submit();"><button type="button" class="button button-delete" onclick="window.location=this.parentNode.href;">{% trans "Delete" %}</button></a>
+        </div>
+
+        <table class="generictbl" id="orgtable">
+        <thead>
+            <tr>
+                <th><a href="#">{% trans 'Name' %}</a></th>
+                <th><a href="#">{% trans 'Description' %}</a></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for obj in objects  %}
+                <tr class="{% if forloop.counter|divisibleby:"2"  %}even{% endif %}">
+                    <td class=""><a href="{% url my_plugin_model obj.pk %}">{{ obj.name }}</a></td>
+                    <td><a href="{% url my_plugin_model obj.pk %}">{{ obj.description }}</a></td>
+                    <td><input type="checkbox" value="{{ obj.pk }}" name="selected_objects" /></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        </table>
+        <div style="float:right;" class="table-delete">
+            <a href="{% url add_my_plugin_model %}"><button type="button" class="button button-add" onclick="window.location=this.parentNode.href;">{% trans "Add" %}</button></a>
+            <a href="#" onclick="$(this).closest('form').submit();"><button type="button" class="button button-delete" onclick="window.location=this.parentNode.href;">{% trans "Delete" %}</button></a>
+        </div>
+        
+    </form>
+    {% else %}
+        <h3>{% trans "Sorry there are no My Plugin Models to show." %}</h3>
+        <p><a href="{% url add_my_plugin_model %}">{% trans "Try adding one" %}.</a></p>
+    {% endif %}
+</div><!-- /itemcontent-->
+
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+        $('#orgtable').dataTable({
+            "bLengthChange": false,
+            "aaSorting": [[0, "desc" ]],
+            "aoColumns": [{ "sType": "natural" },null,null,null,null,null],
+            "iDisplayLength": parseInt('{{ user.get_profile.paginate_by|default:"50" }}',10),
+            "oLanguage": {"sSearch": ""},
+            "sDom": '<"top"ifpl>rt<"bottom"><"clear">',
+            "oLanguage": {
+                "sSearch": "",
+                "sInfo": '{% trans "Showing" %} _START_ {% trans "to" %} _END_ {% trans "of" %} _TOTAL_ {% trans "My Plugin Models" %}'}
+            });
+    $('div.dataTables_filter input').val();
+    });
+</script>
+
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% themeextends "admin/base_admin.html" %}
+{% load i18n %}
+{% block title %}{% trans 'My Plugin Model' %}: {% if object %}{{object.getId}}{% else %}{%trans 'New'%}{% endif %}{% endblock %}
+{% block heading %}{% trans 'My Plugin Model' %}: {% trans 'All Models' %}</a>: {% if object %}{{object.getId}}{% else %}{%trans 'New'%}{% endif %}{% endblock heading %}
+{% block content %}
+
+    <div class="itemcontent">
+    {% if object %}
+        <form action="#" method="post" accept-charset="utf-8" class="formmain">
+    {% else %}
+        <form action="#" method="post" accept-charset="utf-8" class="formmain">
+    {% endif %}
+    {% csrf_token %}
+        <br>
+        <h5 style="background: url({{ MEDIA_URL }}img/icon-distributionrules.png) no-repeat;padding-left:20px;">
+        {% trans 'Define My Plugin Model' %}</h5>
+    
+        <ul>
+            {{ form.as_ul }}
+
+            {% if object %}
+            <li class="mono"><input type="submit" value="{% trans 'Update' %}" class="button"></li>
+            {% else %}
+            <li class="mono"><input type="submit" value="{% trans 'Create' %}" class="button"></li>
+            {% endif %}
+            
+        </ul>   
+    </form>
+
+    </div><!-- /itemcontent-->
+{% endblock content %}
+

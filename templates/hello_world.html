@@ -1,0 +1,10 @@
+{% themeextends "admin/base_admin.html" %}
+{% load i18n %}
+{% block title %}{% trans "My Plugin Message" %}: {% trans 'Title' %}{% endblock title %}
+{% block heading %}{% trans 'My Plugin Message' %}: {{ plugin_message }}{% endblock heading %}
+
+{% block content %}
+    <div class="pagecontent">
+        {{ plugin_message }}
+    </div>
+{% endblock content %}
