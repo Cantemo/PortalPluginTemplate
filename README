@@ -1,0 +1,12 @@
+INSTALL:
+
+Mac/Linux:
+User the install.sh script for installing the plugin for the "core" theme.
+
+Other platforms:
+
+Copy the py files to your plugin folder in the Portal root location. Example:
+C:\cantemo\portal\portal\plugins\PortalPluginTemplate
+
+Copy the template files to you plugin folder in the Portal themes location. Example for the "core" theme:
+C:\cantemo\portal\portal_themes\core\templates\plugins\PortalPluginTemplate
