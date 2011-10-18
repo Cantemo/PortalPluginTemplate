@@ -1,5 +1,6 @@
 from portal.pluginbase.core import *
-from portal.generic.plugin_interfaces import IPluginURL, IPluginBlock
+from portal.generic.plugin_interfaces import IPluginURL, IPluginBlock,\
+    IContextProcessor
 from django.template import loader, Context
 
 import logging
@@ -23,7 +24,7 @@ class MyPluginURL(Plugin):
         self.namespace = 'myplugin'
         # Define a GUID for each plugin.
         # Use e.g. http://www.guidgenerator.com/
-        self.plugin_guid = "replace-with-guid"
+        self.plugin_guid = "906ec22a-bfd4-48be-8d57-4cf8f4cb2da8"
         log.debug("Initiated MyPluginURL")
 
 # Load the URL plugin
@@ -43,7 +44,7 @@ class MyPluginBlock(Plugin):
         self.name = "AdminLeftPanelBottomPanePlugin"
         # Define a GUID for each plugin.
         # Use e.g. http://www.guidgenerator.com/
-        self.plugin_guid = "replace-with-guid"
+        self.plugin_guid = "2ada3ec1-6cb7-464f-b0f7-22ab19ff1527"
         log.debug("Initiated MyPluginBlock")
 
     def return_string(self, tagname, *args):
@@ -68,7 +69,7 @@ class MyNavBarPlugin(Plugin):
         self.name = "NavigationAdminPlugin"
         # Define a GUID for each plugin.
         # Use e.g. http://www.guidgenerator.com/
-        self.plugin_guid = "replace-with-guid"
+        self.plugin_guid = "2d700d00-7edc-445a-913f-e15686f7c9e2"
         log.debug("Initiated MyNavBarPlugin")
 
     def return_string(self, tagname, *args):
@@ -81,3 +82,32 @@ class MyNavBarPlugin(Plugin):
         return {'guid':self.plugin_guid, 'template':'%s/templates/plugins/PortalPluginTemplate/navigation_admin.html' % theme}
 
 pluginblock = MyNavBarPlugin() 
+
+class ItemContextPlugin(Plugin):
+    implements(IContextProcessor) 
+    
+    def __init__(self):
+        self.name = "ItemContextPlugin"
+        # Define a GUID for each plugin.
+        # Use e.g. http://www.guidgenerator.com/
+        self.plugin_guid = "7d024a0e-47ea-45b7-93b9-ae115a8ee7fa"
+        log.debug("Initiated ItemContextPlugin")
+        
+    def __call__(self,context, class_object):
+        from portal.vidispine.vitem import ItemView
+        if isinstance(class_object, ItemView) is False:
+            return context
+
+        self.context = context
+        self.class_object = class_object 
+        #self.username = "test" 
+        return self.process_context()
+    
+    def process_context(self):
+        extra_context = self.context.dicts[len(self.context.dicts)-1]
+        # Do plugin stuff here and modify the extra_context
+        # extra_context['my_new_data_key'] = 'my new data value' 
+
+        return self.context
+    
+contextplugin = ItemContextPlugin()
