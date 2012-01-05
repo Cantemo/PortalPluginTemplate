@@ -1,8 +1,13 @@
 #!/bin/bash
 PORTAL_ROOT="/opt/cantemo/portal"
 PLUGIN_NAME="PortalPluginTemplate"
-sudo mkdir -p $PORTAL_ROOT/portal/plugins/$PLUGIN_NAME
-sudo mkdir -p $PORTAL_ROOT/portal_themes/core/templates/plugins/$PLUGIN_NAME
 
-sudo cp *.py $PORTAL_ROOT/portal/plugins/$PLUGIN_NAME
-sudo cp templates/* $PORTAL_ROOT/portal_themes/core/templates/plugins/$PLUGIN_NAME
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [ "X${DIR}" = "X" ]; then
+    echo "Error: Could not figure out your source directory. This should not happend."
+    exit 1
+fi
+
+sudo mkdir -p $PORTAL_ROOT/plugins/$PLUGIN_NAME
+sudo cp -r $DIR/* $PORTAL_ROOT/plugins/$PLUGIN_NAME

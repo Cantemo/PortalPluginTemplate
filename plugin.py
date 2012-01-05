@@ -17,7 +17,7 @@ class MyPluginURL(Plugin):
     def __init__(self):
         self.name = "MyPluginURL"
         # Should point to the urls.py
-        self.urls = 'PortalPluginTemplate.urls'
+        self.urls = 'portal.plugins.PortalPluginTemplate.urls'
         # Defines the URL pattern prefix
         self.urlpattern = r'^myplugin/'
         # Defines the plugin namespace
@@ -54,7 +54,7 @@ class MyPluginBlock(Plugin):
         except:
             # fallback to sand theme
             theme = 'sand'
-        return {'guid':self.plugin_guid, 'template':'%s/templates/plugins/PortalPluginTemplate/admin_leftpanel_entry.html' % theme}
+        return {'guid':self.plugin_guid, 'template':'admin_leftpanel_entry.html'}
 
 pluginblock = MyPluginBlock() 
 
@@ -79,7 +79,7 @@ class MyNavBarPlugin(Plugin):
         except:
             # fallback to sand theme
             theme = 'sand'
-        return {'guid':self.plugin_guid, 'template':'%s/templates/plugins/PortalPluginTemplate/navigation_admin.html' % theme}
+        return {'guid':self.plugin_guid, 'template':'navigation_admin.html' % theme}
 
 pluginblock = MyNavBarPlugin() 
 
