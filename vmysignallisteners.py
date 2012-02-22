@@ -1,7 +1,6 @@
 import logging
 from django.utils.translation import ugettext as _
 from portal.vidispine.igeneral import performVSAPICall
-from portal.vidispine import signals
 
 from datetime import datetime, timedelta
 from portal.vidispine.isearch import SearchHelper
@@ -28,6 +27,9 @@ class LastVisitedItems(object):
         self.lastUpdated = datetime.now () - timedelta (seconds = UPDATE_FREQUENCY)
         # Make sure the collection is created, and get the id
         self.collection_id = self.getOrCreateLastVisitedCollectionId()
+    
+    def register(self):
+        from portal.vidispine import signals
         # Subscribe to the signal with a callback function
         signals.vidispine_get_item_ntfcn.connect(self.receiver_itempage_visited)
     
@@ -101,5 +103,55 @@ class LastVisitedItems(object):
             log.debug("Not time to update yet...")
             pass
 
-lastVisitedItems = LastVisitedItems()
+class PreMetadataUpdate(object):
+    def register(self):
+        from portal.vidispine import signals
+        # Subscribe to the vidispine_pre_modify signal with a callback function
+        signals.vidispine_pre_modify.connect(self.receiver_itemmetadata_updated)
 
+    def receiver_itemmetadata_updated(self, instance, **kwargs):
+        """ The subscriber function to the vidispine_pre_modify signal
+            This function compares the metadata form from the page that is
+            about to be submitted, to the current item metadata and identifies
+            the fields that are about to be updated. 
+        """
+        if kwargs.has_key('method') and kwargs['method'] == 'setItemMetadata':
+            log.debug('Received a setItemMetadata signal')
+
+            item_helper = ItemHelper() # not setting runas, running as admin
+            # Set content to metadata and include extradata in case
+            # metadata field extra data need to be analyzed
+            content = {'content':['metadata'], 'include':['type','extradata']}
+            res = performVSAPICall(func=item_helper.getItem, args=(instance, content),
+                                   vsapierror_templateorcode=500)
+            
+            if res['success'] != True:
+                log.error("Failed getting item %s" % instance)
+                return
+            
+            _item = res['response']
+            _custom_metadata, _system_metadata, _system_specific_metadata = _item.getMetadata()
+        
+            # the metadata document that represents the metadata form in the web
+            update_metadata_document = kwargs['metadata_document']
+                        
+            timespans = update_metadata_document.timespan
+            for ts in timespans:
+                # We want to make sure to look at the timespan for -INF -> +INF
+                # This excludes timebased metadata
+                if ts.start == '-INF' and ts.end == '+INF':
+                    for field in ts.field:
+                        # Iterate through all fields
+                        current_field = _custom_metadata.getFieldByName(field.name)
+                        try:
+                            # Match each field where the current value is not equal to the
+                            # value in the form
+                            if field.value_[0].value() != current_field.getValue()[0]['value']:
+                                log.debug("This field %s is about to be changed!" % field.name)
+                                log.debug("Old value: %s" % current_field.getValue()[0]['value'])
+                                log.debug("New value: %s" % field.value_[0].value())
+                        except:
+                            # Something unexpected happened...
+                            pass
+                            
+                    break

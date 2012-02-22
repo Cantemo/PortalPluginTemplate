@@ -1,5 +1,14 @@
 from django.db import models
 from django.utils.translation import ugettext as _
+from vmysignallisteners import LastVisitedItems, PreMetadataUpdate
+
+# Load and register LastVisitedItems
+lastVisitedItems = LastVisitedItems()
+lastVisitedItems.register()
+
+# Load and register PreMetadataUpdate
+preMetadataUpdate = PreMetadataUpdate()
+preMetadataUpdate.register()
 
 '''
 Define your plugin model here.
