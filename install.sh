@@ -5,7 +5,7 @@ PLUGIN_NAME="PortalPluginTemplate"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ "X${DIR}" = "X" ]; then
-    echo "Error: Could not figure out your source directory. This should not happend."
+    echo "Error: Could not figure out your source directory. This should not happen."
     exit 1
 fi
 
