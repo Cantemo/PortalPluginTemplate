@@ -9,5 +9,10 @@ if [ "X${DIR}" = "X" ]; then
     exit 1
 fi
 
-sudo mkdir -p $PORTAL_ROOT/plugins/$PLUGIN_NAME
-sudo cp -r $DIR/* $PORTAL_ROOT/plugins/$PLUGIN_NAME
+sudo mkdir -p $PORTAL_ROOT/portal/plugins/$PLUGIN_NAME
+sudo cp -r $DIR/* $PORTAL_ROOT/portal/plugins/$PLUGIN_NAME
+
+echo "Done."
+echo "Stop MediaBox/Portal: supervisorctl stop portal"
+echo "Sync the database: root@mediabox:/opt/cantemo/portal# python manage.py syncdb
+echo "Start MediaBox/Portal: supervisorctl start portal"

@@ -48,7 +48,7 @@
         $('#orgtable').dataTable({
             "bLengthChange": false,
             "aaSorting": [[0, "desc" ]],
-            "aoColumns": [{ "sType": "natural" },null,null,null,null,null],
+            "aoColumns": [{ "sType": "natural" },null],
             "iDisplayLength": parseInt('{{ user.get_profile.paginate_by|default:"50" }}',10),
             "oLanguage": {"sSearch": ""},
             "sDom": '<"top"ifpl>rt<"bottom"><"clear">',

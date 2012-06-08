@@ -8,13 +8,13 @@
     <li><a href="{{ my_plugin_helloworld }}" 
         {% ifequal request.path my_plugin_helloworld %}
             class="selected"
-        {% endifequal %}><img src="{{ MEDIA_URL }}img/icon-accessrules.png" />{% trans 'Hello World' %}</a></li>
+        {% endifequal %}><img src="{{ STATIC_URL }}img/icon-accessrules.png" /> {% trans 'Hello World' %}</a></li>
     <li><a href="{{ my_plugin_models }}" 
         {% ifequal request.path my_plugin_models %}
             class="selected"
-        {% endifequal %}><img src="{{ MEDIA_URL }}img/icon-accessrules.png" />{% trans 'My Plugin Models' %}</a></li>
+        {% endifequal %}><img src="{{ STATIC_URL }}img/icon-accessrules.png" /> {% trans 'My Plugin Models' %}</a></li>
     <li><a href="{{ mam_backend_view }}" 
         {% ifequal request.path mam_backend_view %}
             class="selected"
-        {% endifequal %}><img src="{{ MEDIA_URL }}img/icon-accessrules.png" />{% trans 'MAM Backend' %}</a></li>
+        {% endifequal %}><img src="{{ STATIC_URL }}img/icon-accessrules.png" /> {% trans 'MAM Backend' %}</a></li>
 </ul>
