@@ -47,6 +47,9 @@ class LastVisitedItems(object):
         if not res['success'] or res['response'][0]['hits'] == 0:
             # Either the search failed or there was no hits for the collection
             return self.createLastVisitedCollection()
+        else:
+            return res['response'][0]['collection'][0]['id']
+
 
     def createLastVisitedCollection(self):
         """ This function is called if there is no last visited collection in the system    
