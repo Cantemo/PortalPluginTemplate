@@ -79,7 +79,7 @@ class MyNavBarPlugin(Plugin):
         except:
             # fallback to sand theme
             theme = 'sand'
-        return {'guid':self.plugin_guid, 'template':'navigation_admin.html' % theme}
+        return {'guid':self.plugin_guid, 'template':'navigation_admin.html'}
 
 pluginblock = MyNavBarPlugin() 
 

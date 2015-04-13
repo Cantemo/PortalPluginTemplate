@@ -19,7 +19,7 @@ plugin is included in the APPS_TO_INSTALL list in settings.py.
 Example: 
 APPS_TO_INSTALL = [ ..., 'portal.plugins.PortalPluginTemplate', ... ]
 
-Don't forget to do a 'python manage.py syncdb --all' afterwards!
+Don't forget to do a 'python manage.py syncdb' afterwards!
 '''
 class MyPluginModel(models.Model):
     """ Definition of a plugin model.

@@ -13,6 +13,6 @@ sudo mkdir -p $PORTAL_ROOT/portal/plugins/$PLUGIN_NAME
 sudo cp -r $DIR/* $PORTAL_ROOT/portal/plugins/$PLUGIN_NAME
 
 echo "Done."
-echo "Stop MediaBox/Portal: supervisorctl stop portal"
+echo "Stop Portal: supervisorctl stop portal"
 echo "Sync the database: root@mediabox:/opt/cantemo/portal# python manage.py syncdb"
-echo "Start MediaBox/Portal: supervisorctl start portal"
+echo "Start Portal: supervisorctl start portal"
