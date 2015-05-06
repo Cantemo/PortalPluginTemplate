@@ -1,0 +1,24 @@
+{% themeextends "dashboard/base_widget.html" %}
+{% block widget_content %}
+    {{ content }}
+    <!-- Using an id here based on widgets id -- otherwise multiple
+    refresh_widgets will mess with each other  -->
+    <div id="timer-bar{{ id }}"
+         style="background-color:rgba(0, 183, 234, 0.5); margin-top: 5px; height: 1px; width: 100%"> </div>
+
+    <!-- script below is loaded with the HTML and executed normally -->
+    <script>
+        // Ask to reload widget in given time, converted to milliseconds.
+        cntmo.app.dashboard.reloadWidgetAfter('{{ id }}',
+                {{ refresh_interval }}000);
+
+        // Animate timer bar using jQuery UI. Called after a small timeout,
+        // so that when adding this widget
+        // for the first time the layout has finished before animation starts.
+        setTimeout(function() {
+            $("#timer-bar{{ id }}").hide("slide",
+                    {direction: "left", easing: "linear"},
+                    {{ refresh_interval }}000);
+        }, 100);
+    </script>
+{% endblock widget_content %}

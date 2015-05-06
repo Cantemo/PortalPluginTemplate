@@ -1,0 +1,9 @@
+{% themeextends "dashboard/base_widget.html" %}
+{% load i18n %}
+{% block widget_content %}
+    This dummy widget is not configurable.<br/>
+    Widget instance ID: {{ id }}
+    <div class="ui-corner-all" style="background-color:#{{ id|slice:":6" }}; padding: 5px">
+        Identifying color: {{ id|slice:":6" }}
+    </div>
+{% endblock widget_content %}

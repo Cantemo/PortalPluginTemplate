@@ -1,0 +1,47 @@
+{% themeextends "dashboard/base_widget.html" %}
+{% load i18n datetimeformatting %}
+{% block widget_content %}
+    {% if error %}
+        <div class="errormessage">
+            <p>
+                {% trans "Error parsing feed" %}: <b>{{ error }}</b><br>
+                {% trans "Feed URL" %}: <b>{{ feed_url }}</b>
+            </p>
+        </div>
+        {% trans "You can change the feed URL from widget configuration." %}
+    {% else %}
+        {% for e in entries %}
+            <div id="entry{{ id }}{{ forloop.counter }}"
+                 style="padding: 3px 3px 10px 3px; border-bottom: 1px solid rgba(0, 0, 0, 0.2); {% if e.is_new %}display:none{% endif %}">
+                <a target="_blank" href="{{ e.link }}">
+                    {% if e.media_thumbnail  %}
+                        <img style="float: right; padding: 3px" src="{{ e.media_thumbnail.0.url }}"/>
+                    {% endif %}
+                    <span style="font-weight: bold">{{ e.title }}</span><br>
+                    <span style="color: #ccc">{% trans "Posted:" %} {{ e.published }}</span><br>
+                </a>
+                <p>{{ e.summary|safe }}</p>
+            </div>
+        {% endfor %}
+        <p style="color: #ccc">
+            {% trans "Feed was last updated:" %} {{ feed.updated }}
+            {% if feed.link %}
+                - <a target="_blank" href="{{ feed.link }}">{% trans "Feed homepage" %}</a>
+            {% endif %}
+        </p>
+    {% endif %}
+    <script>
+        // Animate showing of new entries and hiding of old ones
+        {% for e in entries %}
+            {% if e.is_new %}
+                $("#entry{{ id }}{{ forloop.counter }}").slideDown();
+            {% endif %}
+            {% if e.to_remove %}
+                $("#entry{{ id }}{{ forloop.counter }}").slideUp();
+            {% endif %}
+        {% endfor %}
+        // Ask to reload widget in given time, converted to milliseconds.
+        cntmo.app.dashboard.reloadWidgetAfter('{{ id }}', {{ refresh_interval }}000);
+    </script>
+
+{% endblock widget_content %}
