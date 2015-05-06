@@ -322,7 +322,7 @@ class RSSFeedWidget(Plugin):
             render_data['error'] = (
                 "Could not import \"feedparser\" library, install it with the following "
                 "command and restart Portal:"
-                "\n\n\n$ pip install feedparser"
+                "\n\n\n$ /opt/cantemo/python/bin/pip install feedparser"
             )
             return render_data
 
