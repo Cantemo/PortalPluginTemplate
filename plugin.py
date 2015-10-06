@@ -1,6 +1,6 @@
 from portal.pluginbase.core import *
 from portal.generic.plugin_interfaces import IPluginURL, IPluginBlock,\
-    IContextProcessor
+    IContextProcessor, IAppRegister
 from django.template import loader, Context
 
 import logging
@@ -130,3 +130,23 @@ class ItemContextPlugin(Plugin):
         return self.context
     
 contextplugin = ItemContextPlugin()
+
+class PortalPluginTemplatePluginRegister(Plugin):
+    implements(IAppRegister)
+
+    def __init__(self):
+        self.name = "PortalPluginTemplateRegister"
+        self.plugin_guid = "2b622e08-e442-44da-ac5b-cd73f3fc7e70"
+        log.debug('Registered the PortalPluginTemplate App')
+
+    def __call__(self):
+        from __init__ import __version__ as versionnumber
+        _app_dict = {
+            'name': 'PortalPluginTemplate Plugin',
+            'version': versionnumber,
+            'author': 'Cantemo AB',
+            'author_url': 'www.cantemo.com',
+            'notes': 'Copyright 2012-2015. All Rights Reserved'}
+        return _app_dict
+
+nleappluginred = PortalPluginTemplatePluginRegister()

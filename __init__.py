@@ -7,3 +7,5 @@ try:
 except ImportError:
     # This only works on portal 2.1 or later
     pass
+
+__version__ = "DEVEL"
