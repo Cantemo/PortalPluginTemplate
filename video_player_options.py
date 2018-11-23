@@ -1,7 +1,7 @@
 """
 An example and test plugin for Item Page, SubClip Page, Sharing Page and Annotation Tool video player option overrides.
 
-These plugins are supported in Portal 3.4.5 and later.
+These plugins are supported in Portal 3.4.4 and later.
 
 Some of these examples are available in documentation as well.
 """
