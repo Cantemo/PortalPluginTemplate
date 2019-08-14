@@ -49,7 +49,7 @@ class DummyWidget(Plugin):
     def __init__(self):
         self.name = 'DummyWidget'
         self.plugin_guid = '4DA92DF6-9579-4813-8BEF-525AE897D750'
-        self.template_name = 'dummy_widget.html'
+        self.template_name = 'portalplugintemplate/dummy_widget.html'
         self.configurable = False
 
     @staticmethod
@@ -151,7 +151,7 @@ class RefreshWidget(Plugin):
     def __init__(self):
         self.name = 'RefreshWidget'
         self.plugin_guid = '3622B952-E9C0-4429-BD00-65B6958322BF'
-        self.template_name = 'refresh_widget.html'
+        self.template_name = 'portalplugintemplate/refresh_widget.html'
         self.configurable = True
 
     @staticmethod
@@ -215,7 +215,7 @@ class ConfigTestWidget(Plugin):
     @staticmethod
     def get_render_data(render_data, settings, request):
         content = 'All settings values:'
-        for key, value in sorted(settings.iteritems()):
+        for key, value in sorted(settings.items()):
             content += '\n"%s": %r (%s)' % (key, value, type(value).__name__)
         content += '\nn=%s' % len(settings)
         render_data['content'] = content

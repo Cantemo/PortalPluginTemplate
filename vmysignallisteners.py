@@ -9,7 +9,7 @@ from portal.vidispine.iitem import ItemHelper
 
 log = logging.getLogger(__name__)
 
-#update every 30 seconds
+# update every 30 seconds
 UPDATE_FREQUENCY = 30
 
 """
@@ -21,10 +21,12 @@ c) When a user visits an item page, put the item id in the items list in the cla
 d) If last update was over 30 seconds ago, update the collection with the new items and empty the items list
  
 """
+
+
 class LastVisitedItems(object):
     def __init__(self):
         self.items = []
-        self.lastUpdated = datetime.now () - timedelta (seconds = UPDATE_FREQUENCY)
+        self.lastUpdated = datetime.now() - timedelta(seconds=UPDATE_FREQUENCY)
         # Make sure the collection is created, and get the id
         self.collection_id = self.getOrCreateLastVisitedCollectionId()
     
@@ -36,13 +38,19 @@ class LastVisitedItems(object):
     def getOrCreateLastVisitedCollectionId(self):
         """ Attempt to make a search for the 'lastVisitedItems'. If none is found, create it.
         """
-        sh = SearchHelper() # don't set the runas, so it is run as admin
+        sh = SearchHelper()  # don't set the runas, so it is run as admin
         # Set the search domain to collections
         sh.searchdomain = 'collection'
         # Create the searchmetadata where portal_collectiontype_hidden is set to lastVisitedItems
         # Note that Portal doesn't render metadatafields which end with '_hidden'
-        sh.searchmetadata = {'fields':{'portal_collectiontype_hidden':{'value':'lastVisitedItems', 'type':'string', 'extradata':{}}}}
-        res = performVSAPICall(func=sh.search, args={'_content':{}, 'page':1, 'queryamount':1}, 
+        sh.searchmetadata = {
+            'fields': {
+                'portal_collectiontype_hidden': {
+                    'value': 'lastVisitedItems', 'type': 'string', 'extradata': {}
+                }
+            }
+        }
+        res = performVSAPICall(func=sh.search, args={'_content': {}, 'page': 1, 'queryamount': 1},
                                vsapierror_templateorcode=500)
         if not res['success'] or res['response'][0]['hits'] == 0:
             # Either the search failed or there was no hits for the collection
@@ -50,14 +58,13 @@ class LastVisitedItems(object):
         else:
             return res['response'][0]['collection'][0]['id']
 
-
     def createLastVisitedCollection(self):
         """ This function is called if there is no last visited collection in the system    
         """
         # Create the collection helper as admin (don't set the runas)
         ch = CollectionHelper()
         # Create a collection with the name lastVisitedItems
-        res = performVSAPICall(func=ch.createCollection, args={'collection_name':'lastVisitedItems'},
+        res = performVSAPICall(func=ch.createCollection, args={'collection_name': 'lastVisitedItems'},
                                vsapierror_templateorcode=500)
         # If the call fails return
         if not res['success']:
@@ -65,7 +72,11 @@ class LastVisitedItems(object):
         # Get the ID
         collection_id = res['response'].getId()
         # Update a single metadata field value of the collection
-        res = performVSAPICall(func=ch.setCollectionMetadataFieldValue, args={'collection_id':collection_id, 'field_name':'portal_collectiontype_hidden', 'field_val':'lastVisitedItems'},
+        res = performVSAPICall(func=ch.setCollectionMetadataFieldValue,
+                               args={
+                                   'collection_id': collection_id,
+                                   'field_name': 'portal_collectiontype_hidden',
+                                   'field_val': 'lastVisitedItems'},
                                vsapierror_templateorcode=500)
         # Return the collection ID
         return collection_id
@@ -73,18 +84,20 @@ class LastVisitedItems(object):
     def receiver_itempage_visited(self, instance, **kwargs):
         """ The subscriber function to the vidispine_get_item_ntfcn signal
         """
-        if not instance in self.items:
+        if instance not in self.items:
             self.items.append(instance)
             
         # Check if it is time to update the last visited collection
-        now = datetime.now ()
-        if (now - self.lastUpdated) > timedelta (seconds = UPDATE_FREQUENCY):
+        now = datetime.now()
+        if (now - self.lastUpdated) > timedelta(seconds=UPDATE_FREQUENCY):
             log.debug("Time to update!")
-            # Setting updated time to now in case something breaks in the API calls - we still want the 30s delay so it doesn't flood the system
+            # Setting updated time to now in case something breaks in the API calls
+            # we still want the 30s delay so it doesn't flood the system
             self.lastUpdated = now
-            ih = ItemHelper() # run as admin
-            # A quick way of adding multiple items to a collection is to create a library of the items and then add the library instead
-            res = performVSAPICall(func=ih.createLibraryFromItemList, args={'item_id_list':self.items},
+            ih = ItemHelper()  # run as admin
+            # A quick way of adding multiple items to a collection is to create a library of the items
+            # and then add the library instead
+            res = performVSAPICall(func=ih.createLibraryFromItemList, args={'item_id_list': self.items},
                                    vsapierror_templateorcode=500)
             if not res['success']:
                 log.warning("Failed updating last visited items collection. Couldn't create library from item list: %s" % self.items)
@@ -92,12 +105,14 @@ class LastVisitedItems(object):
 
             # Get the library ID
             library_id = res['response']
-            ch = CollectionHelper() # run as admin
+            ch = CollectionHelper()  # run as admin
             # Add the library to the collection
-            res = performVSAPICall(func=ch.addLibraryToCollection, args={'collection_id':self.collection_id, 'library_id':library_id},
+            res = performVSAPICall(func=ch.addLibraryToCollection,
+                                   args={'collection_id': self.collection_id, 'library_id': library_id},
                                    vsapierror_templateorcode=500)
             if not res['success']:
-                log.warning("Failed updating last visited items collection. Couldn't add item list to collection: %s" % self.items)
+                log.warning("Failed updating last visited items collection."
+                            " Couldn't add item list to collection: %s" % self.items)
             # Clean the items list
             self.items = []
             log.debug("Updated last visited items successfully")
@@ -105,6 +120,7 @@ class LastVisitedItems(object):
         else:
             log.debug("Not time to update yet...")
             pass
+
 
 class PreMetadataUpdate(object):
     def register(self):
@@ -118,17 +134,17 @@ class PreMetadataUpdate(object):
             about to be submitted, to the current item metadata and identifies
             the fields that are about to be updated. 
         """
-        if kwargs.has_key('method') and kwargs['method'] == 'setItemMetadata':
+        if kwargs.get('method') == 'setItemMetadata':
             log.debug('Received a setItemMetadata signal')
 
-            item_helper = ItemHelper() # not setting runas, running as admin
+            item_helper = ItemHelper()  # not setting runas, running as admin
             # Set content to metadata and include extradata in case
             # metadata field extra data need to be analyzed
-            content = {'content':['metadata'], 'include':['type','extradata']}
+            content = {'content': ['metadata'], 'include': ['type', 'extradata']}
             res = performVSAPICall(func=item_helper.getItem, args=(instance, content),
                                    vsapierror_templateorcode=500)
             
-            if res['success'] != True:
+            if not res['success']:
                 log.error("Failed getting item %s" % instance)
                 return
             

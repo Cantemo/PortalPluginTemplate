@@ -7,9 +7,9 @@
 {% block content %}
 <div class="itemcontent">
     {% if objects %}
-    <form action="{% url delete_my_plugin_model %}">
+    <form action="{% url 'delete_my_plugin_model' %}">
         <div style="float:right;" class="table-delete">
-            <a href="{% url add_my_plugin_model %}"><button type="button" class="button button-add" onclick="window.location=this.parentNode.href;">{% trans "Add" %}</button></a>
+            <a href="{% url 'add_my_plugin_model' %}"><button type="button" class="button button-add" onclick="window.location=this.parentNode.href;">{% trans "Add" %}</button></a>
             <a href="#" onclick="$(this).closest('form').submit();"><button type="button" class="button button-delete" onclick="window.location=this.parentNode.href;">{% trans "Delete" %}</button></a>
         </div>
 
@@ -24,22 +24,22 @@
         <tbody>
             {% for obj in objects  %}
                 <tr class="{% if forloop.counter|divisibleby:"2"  %}even{% endif %}">
-                    <td class=""><a href="{% url my_plugin_model obj.pk %}">{{ obj.name }}</a></td>
-                    <td><a href="{% url my_plugin_model obj.pk %}">{{ obj.description }}</a></td>
+                    <td class=""><a href="{% url 'my_plugin_model' obj.pk %}">{{ obj.name }}</a></td>
+                    <td><a href="{% url 'my_plugin_model' obj.pk %}">{{ obj.description }}</a></td>
                     <td><input type="checkbox" value="{{ obj.pk }}" name="selected_objects" /></td>
                 </tr>
             {% endfor %}
         </tbody>
         </table>
         <div style="float:right;" class="table-delete">
-            <a href="{% url add_my_plugin_model %}"><button type="button" class="button button-add" onclick="window.location=this.parentNode.href;">{% trans "Add" %}</button></a>
+            <a href="{% url 'add_my_plugin_model' %}"><button type="button" class="button button-add" onclick="window.location=this.parentNode.href;">{% trans "Add" %}</button></a>
             <a href="#" onclick="$(this).closest('form').submit();"><button type="button" class="button button-delete" onclick="window.location=this.parentNode.href;">{% trans "Delete" %}</button></a>
         </div>
         
     </form>
     {% else %}
         <h3>{% trans "Sorry there are no My Plugin Models to show." %}</h3>
-        <p><a href="{% url add_my_plugin_model %}">{% trans "Try adding one" %}.</a></p>
+        <p><a href="{% url 'add_my_plugin_model' %}">{% trans "Try adding one" %}.</a></p>
     {% endif %}
 </div><!-- /itemcontent-->
 

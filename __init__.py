@@ -1,7 +1,7 @@
 '''
 Import all plugins here
 '''
-from plugin import *
+from .plugin import *
 try:
     from dashboard_widget_examples import *
 except ImportError:

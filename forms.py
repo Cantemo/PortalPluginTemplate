@@ -1,11 +1,13 @@
 from django import forms
 from django.utils.translation import ugettext as _
-from models import MyPluginModel
+from .models import MyPluginModel
 
 ''' 
 Define your plugin form here.
 More info: https://docs.djangoproject.com/en/dev/topics/forms/
 '''
+
+
 class MyPluginForm(forms.ModelForm):
     """ Main form for adding and editing MyPluginModel
         
@@ -15,4 +17,4 @@ class MyPluginForm(forms.ModelForm):
 
     class Meta(object):
         model = MyPluginModel
-        exclude = ('external_id')            
+        exclude = ('external_id',)
