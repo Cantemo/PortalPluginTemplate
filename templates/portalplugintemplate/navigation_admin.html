@@ -1,0 +1,4 @@
+{% load i18n cache navbar %}
+{% permissionrequired  portal_administrator %}
+    <li><a href="{% url 'my_plugin_helloworld' %}">{% trans "Hello World" %}</a></li>
+{% endpermissionrequired %}

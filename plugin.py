@@ -6,11 +6,11 @@ from django.template import loader, Context
 import logging
 log = logging.getLogger(__name__)
 
-'''
-URL Plugin that defines new URL's in the system
-''' 
+
 class MyPluginURL(Plugin):
-    """ Loads the Admin rules URL's
+    """
+    URL Plugin that defines new URL's in the system
+    Loads the Admin rules URL's
     """
     implements(IPluginURL)
     
@@ -27,13 +27,15 @@ class MyPluginURL(Plugin):
         self.plugin_guid = "906ec22a-bfd4-48be-8d57-4cf8f4cb2da8"
         log.debug("Initiated MyPluginURL")
 
-# Load the URL plugin
-pluginurls = MyPluginURL()
 
-'''
-Block plugin which defines new functionalities and workflows in to the system
-'''
-class MyPluginBlock(Plugin):
+# Load the URL plugin
+MyPluginURL()
+
+
+class MyPluginAdminMenu(Plugin):
+    """
+    Adds the plugin to the admin menu
+    """
     
     implements(IPluginBlock)
 
@@ -54,12 +56,13 @@ class MyPluginBlock(Plugin):
         except:
             # fallback to sand theme
             theme = 'sand'
-        return {'guid':self.plugin_guid, 'template':'admin_leftpanel_entry.html'}
+        return {'guid': self.plugin_guid, 'template': 'portalplugintemplate/admin_leftpanel_entry.html'}
 
-pluginblock = MyPluginBlock() 
+
+MyPluginAdminMenu()
+
 
 class MyNavBarPlugin(Plugin):
-    
     implements(IPluginBlock)
 
     def __init__(self):
@@ -79,9 +82,11 @@ class MyNavBarPlugin(Plugin):
         except:
             # fallback to sand theme
             theme = 'sand'
-        return {'guid':self.plugin_guid, 'template':'navigation_admin.html'}
+        return {'guid': self.plugin_guid, 'template': 'portalplugintemplate/navigation_admin.html'}
 
-pluginblock = MyNavBarPlugin() 
+
+MyNavBarPlugin()
+
 
 class MyGearboxMenuPlugin(Plugin):
     implements(IPluginBlock)
@@ -97,9 +102,10 @@ class MyGearboxMenuPlugin(Plugin):
         log.debug("Initiated MyGearboxMenuPlugin")
 
     def return_string(self, tagname, *args):
-        return {'guid':self.plugin_guid, 'template':'gearbox_menu.html' }
+        return {'guid': self.plugin_guid, 'template': 'portalplugintemplate/gearbox_menu.html'}
 
-pluginblock = MyGearboxMenuPlugin() 
+
+MyGearboxMenuPlugin()
 
 
 class ItemContextPlugin(Plugin):
@@ -128,8 +134,10 @@ class ItemContextPlugin(Plugin):
         # extra_context['my_new_data_key'] = 'my new data value' 
 
         return self.context
-    
-contextplugin = ItemContextPlugin()
+
+
+ItemContextPlugin()
+
 
 class PortalPluginTemplatePluginRegister(Plugin):
     implements(IAppRegister)
@@ -140,7 +148,7 @@ class PortalPluginTemplatePluginRegister(Plugin):
         log.debug('Registered the PortalPluginTemplate App')
 
     def __call__(self):
-        from __init__ import __version__ as versionnumber
+        from .__init__ import __version__ as versionnumber
         _app_dict = {
             'name': 'PortalPluginTemplate Plugin',
             'version': versionnumber,
@@ -149,4 +157,5 @@ class PortalPluginTemplatePluginRegister(Plugin):
             'notes': 'Copyright 2012-2015. All Rights Reserved'}
         return _app_dict
 
-nleappluginred = PortalPluginTemplatePluginRegister()
+
+PortalPluginTemplatePluginRegister()

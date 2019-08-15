@@ -3,14 +3,15 @@ from django.utils.translation import ugettext as _
 from django.contrib import messages
 
 import logging
-from models import MyPluginModel
+from .models import MyPluginModel
 from django.shortcuts import get_object_or_404
-from forms import MyPluginForm
+from .forms import MyPluginForm
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from portal.vidispine.iuser import UserHelper
 from portal.vidispine.igeneral import performVSAPICall
 log = logging.getLogger(__name__)
+
 
 class HelloWorldView(ClassView):
     """
@@ -23,6 +24,7 @@ class HelloWorldView(ClassView):
         log.debug("Hello World message successfully sent")
         return self.main(self.request, self.template, extra_context)
 
+
 class MyPluginModelsView(ClassView):
     """ View all MyPluginModels
     """
@@ -30,6 +32,7 @@ class MyPluginModelsView(ClassView):
         _objs = MyPluginModel.objects.all()
         ctx = {"objects":_objs}
         return self.main(self.request, self.template, ctx)
+
 
 class MyPluginModelView(ClassView):
     """ View a particular MyPluginModel
@@ -52,6 +55,7 @@ class MyPluginModelView(ClassView):
 
         ctx = {"object":_obj, "form":_form}
         return self.main(self.request, self.template, ctx)
+
 
 class MyPluginModelDeleteView(ClassView):
     """ Delete a particular MyPluginModel
@@ -82,10 +86,10 @@ class MyPluginModelDeleteView(ClassView):
                 except MyPluginModel.DoesNotExist:
                     messages.error(self.request, _("Tried to delete a My Plugin Model which didn't exist"))
                     return HttpResponseRedirect(reverse('my_plugin_models'))
-            
-            
+
         ctx = { "deletable_objects": _deletable_objects, "object_name": _("My Plugin Model"), "objects":objects}
         return self.main(self.request, self.template, ctx)
+
 
 class MyPluginModelAddView(ClassView):
     """ Add a MyPluginModel
@@ -104,6 +108,7 @@ class MyPluginModelAddView(ClassView):
 
         ctx = {"form":_form}
         return self.main(self.request, self.template, ctx)
+
 
 class MAMBackendInfoView(ClassView):
     """ View info from MAM backend

@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext as _
-from vmysignallisteners import LastVisitedItems, PreMetadataUpdate
+from .vmysignallisteners import LastVisitedItems, PreMetadataUpdate
 
 # Load and register LastVisitedItems
 lastVisitedItems = LastVisitedItems()
@@ -21,6 +21,8 @@ APPS_TO_INSTALL = [ ..., 'portal.plugins.PortalPluginTemplate', ... ]
 
 Don't forget to do a 'python manage.py syncdb' afterwards!
 '''
+
+
 class MyPluginModel(models.Model):
     """ Definition of a plugin model.
         
@@ -34,6 +36,5 @@ class MyPluginModel(models.Model):
         verbose_name_plural = _("My Plugin Model")
 
     def __unicode__(self):
-        _name= self.name + " (" + self.external_id + ")"
+        _name = self.name + " (" + self.external_id + ")"
         return _name
-    

@@ -1,10 +1,10 @@
 {% load i18n messages %}
-{% url my_plugin_helloworld as my_plugin_helloworld %}
-{% url my_plugin_models as my_plugin_models %}
-{% url mam_backend_view as mam_backend_view %}
+{% url 'my_plugin_helloworld' as my_plugin_helloworld %}
+{% url 'my_plugin_models' as my_plugin_models %}
+{% url 'mam_backend_view' as mam_backend_view %}
 
 <h4>{% trans 'My Plugin' %}</h4>
-<ul>
+<ol>
     <li><a href="{{ my_plugin_helloworld }}" 
         {% ifequal request.path my_plugin_helloworld %}
             class="selected"
@@ -17,4 +17,4 @@
         {% ifequal request.path mam_backend_view %}
             class="selected"
         {% endifequal %}><img src="{{ STATIC_URL }}img/icon-accessrules.png" /> {% trans 'MAM Backend' %}</a></li>
-</ul>
+</ol>
