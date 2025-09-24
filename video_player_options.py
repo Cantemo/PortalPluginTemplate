@@ -1,4 +1,8 @@
 """
+****************************************************************
+DEPRECATED: This plugin does not work in Cantemo 6.0.0 or later.
+****************************************************************
+
 An example and test plugin for Item Page, SubClip Page, Sharing Page and Annotation Tool video player option overrides.
 
 These plugins are supported in Portal 3.4.4 and later.
