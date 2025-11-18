@@ -7,9 +7,8 @@
 
   <li>
     <a href="{{ my_plugin_helloworld }}"
-       class="{% if my_plugin_helloworld in request.path %} selected{% endif %}"
     >{% trans 'My Plugin' %}</a>
-    <ul class="level-three">
+    <ul class="level-two">
       <li>
         <a href="{{ my_plugin_helloworld }}"
            class="{% if my_plugin_helloworld in request.path %} selected{% endif %}"
@@ -24,6 +23,14 @@
         <a href="{{ mam_backend_view }}"
            class="{% if mam_backend_view in request.path %} selected{% endif %}"
         >{% trans 'MAM Backend' %}</a>
+      </li>
+      <li>
+        <a href="#">{% trans 'Sub menu demo' %}</a>
+        <ul class="level-three">
+          <li><a href="#">{% trans 'Sub menu item 1' %}</a></li>
+          <li><a href="#">{% trans 'Sub menu item 2' %}</a></li>
+          <li><a href="#">{% trans 'Sub menu item 3' %}</a></li>
+        </ul>
       </li>
     </ul>
   </li>

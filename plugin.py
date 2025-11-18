@@ -86,6 +86,21 @@ class MyNavBarPlugin(Plugin):
 
 MyNavBarPlugin()
 
+class MyNavigationSectionPlugin(Plugin):
+    implements(IPluginBlock)
+
+    def __init__(self):
+        # This adds a menu item to the top level menu.
+        self.name = "NavigationSectionPlugin"
+        self.plugin_guid = "083b7327-70f0-4818-9e6d-b34aad459247"
+        log.debug("Initiated MyNavigationSectionPlugin")
+
+    def return_string(self, tagname, *args):
+        return {'guid': self.plugin_guid, 'template': 'portalplugintemplate/navigation_top_level.html'}
+
+
+MyNavigationSectionPlugin()
+
 
 class MyGearboxMenuPlugin(Plugin):
     implements(IPluginBlock)
