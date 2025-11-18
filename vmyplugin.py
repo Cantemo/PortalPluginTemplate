@@ -1,5 +1,5 @@
 from portal.generic.baseviews import ClassView
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
 
 import logging
@@ -7,7 +7,7 @@ from .models import MyPluginModel
 from django.shortcuts import get_object_or_404
 from .forms import MyPluginForm
 from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from portal.vidispine.iuser import UserHelper
 from portal.vidispine.igeneral import performVSAPICall
 log = logging.getLogger(__name__)

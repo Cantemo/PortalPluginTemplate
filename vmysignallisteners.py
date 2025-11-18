@@ -1,5 +1,5 @@
 import logging
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext_lazy as _
 from portal.vidispine.igeneral import performVSAPICall
 
 from datetime import datetime, timedelta

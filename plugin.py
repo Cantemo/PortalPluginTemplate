@@ -1,7 +1,6 @@
 from portal.pluginbase.core import *
 from portal.generic.plugin_interfaces import IPluginURL, IPluginBlock,\
     IContextProcessor, IAppRegister
-from django.template import loader, Context
 
 import logging
 log = logging.getLogger(__name__)

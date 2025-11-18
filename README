@@ -1,3 +1,12 @@
 This is a collection of example plugins for Cantemo Portal, intended for educational purposes.
 
 Use the install.sh script for installing the plugin. It will install it into /opt/cantemo/portal/portal/plugins/PortalPluginTemplate
+
+Update 2025-11-18: Some of the functionality in these examples are deprecated. Still valid in Cantemo 6:
+* Dashboard widgets
+* Menu items (`templates/portalplugintemplate/navigation_admin.html` etc)
+
+Deprecated:
+* Video player options
+* The views are implemented with an old base class `ClassView`
+* Database migrations not included and not picked up by modern Cantemo
